@@ -8,7 +8,10 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    
+    all_posts = Post.objects.all()
+    print(all_posts)
+    return render(request, "network/index.html", {"posts":all_posts})
 
 
 def login_view(request):
@@ -80,8 +83,8 @@ def compose_post(request):
     HttpResponseRedirect(reverse("index"))
 
 
-def show_posts(){
+def show_posts():
     all_posts = Post.objects.all()
-    return render(request, "network_index", {"posts":all_posts})
+    return render(request, "network/index.html", {"posts":all_posts})
 
-}
+

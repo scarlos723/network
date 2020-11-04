@@ -1,20 +1,66 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
 
+{% if user.is_authenticated %}
 <div class="box-cont">
     <form action="newpost" method="POST">
         {% csrf_token %}
         <input type="text" value="{{user.id}}" name="id" hidden>
-        <textarea name="text" id="post-text" > </textarea>
+        <textarea name="text" id="post-text"> </textarea>
 
-        <button type="submit" class="btn btn-primary btn-sm" >Post</button>
+        <button type="submit" class="btn btn-primary btn-sm">Post</button>
 
     </form>
 </div>
+{%endif%}
+
 <div class="box-cont">
-    Aqui va las publicaciones
+
+    {% for post in posts %}
+
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"> {{post.user.username}}</h5>
+            <p>
+                {% if post.user.username == user.username %}
+                <a href="#">Edit</a>
+                {% endif %}
+            </p>
+            <p class="card-text">{{post.text}}</p>
+            <p class="card-text"><small class="text-muted">{{post.date}}</small></p>
+            <p> <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> <small>{{post.likes}}</small></p>
+        </div>
+
+    </div>
+    <hr>
+
+    <!-- <div class="card">
+        <div class="card-header">
+            <h4>
+                <strong>
+                    {{post.user.username}}
+                </strong>
+            </h4>
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                {% if post.user.username == user.username %}
+                <a href="#">Edit</a>
+                {% endif %}
+                <p>{{post.text}}</p>
+                <footer class="text-muted">{{post.date}} </footer>
+                <p> <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> <small>{{post.likes}}</small>
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <hr> -->
+    {% endfor %}
 </div>
+
 
 
 
