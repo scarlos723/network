@@ -29,3 +29,14 @@ textarea{
     margin: 10px;
 
 }
+
+#button_follow{
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    text-decoration: none;
+}

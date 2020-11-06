@@ -23,7 +23,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title"> {{post.user.username}}</h5>
+            <h5 class="card-title"> <a href="/profile/{{post.user.id}}" style="text-decoration: none;"> {{post.user.username}} </a> </h5>
             <p>
                 {% if post.user.username == user.username %}
                 <a href="#">Edit</a>

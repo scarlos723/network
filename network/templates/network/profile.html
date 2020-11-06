@@ -1,0 +1,43 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<div class="box-cont">
+    <p><strong> {{user_prof.username}} </strong></p>
+    <p>{{user_prof. }}</p>
+    <p>Followers: {{follows}} </p>
+    <p>Followed: {{followed}}</p>
+    {%if user.username != user_prof.username%}
+    
+    <a href="/follow/{{user_prof.id}}" id="button_follow" >Seguir</a>
+    {%endif%}
+
+</div>
+
+<div class="box-cont">
+    {% for post in all_posts %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"> {{post.user.username}}</h5>
+            <p>
+                {% if post.user.username == user.username %}
+                <a href="#">Edit</a>
+                {% endif %}
+            </p>
+            <p class="card-text">{{post.text}}</p>
+            <p class="card-text"><small class="text-muted">{{post.date}}</small></p>
+            <p> <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> <small>{{post.likes}}</small></p>
+        </div>
+
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+
+
+
+
+
+
+{% endblock %}

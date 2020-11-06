@@ -4,13 +4,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Post
+from .models import User, Post, Followers, Like
 
 
 def index(request):
     
     all_posts = Post.objects.all()
-    print(all_posts)
+    
     return render(request, "network/index.html", {"posts":all_posts})
 
 
@@ -83,8 +83,45 @@ def compose_post(request):
     HttpResponseRedirect(reverse("index"))
 
 
-def show_posts():
-    all_posts = Post.objects.all()
-    return render(request, "network/index.html", {"posts":all_posts})
+def show_user(request, id):
+
+    print(request.user.id)
+    user_prof = User.objects.get(pk=id)
+
+    follow_count = Followers.objects.filter(user=user_prof).count()
+    all_posts = Post.objects.get(user=user_prof)
+    followed_count = Followers.objects.filter(follower=user_prof).count()
+    all_p = []
+
+    try:
+        print(len(all_posts))
+    except (TypeError):
+        all_p.append(Post.objects.get(user=user_prof))
+        all_posts = all_p
+
+    return render(request, "network/profile.html", {"all_posts":all_posts,"user_prof":user_prof,"follows":follow_count,"followed":followed_count})
 
 
+def follow_to(request,id):
+    user_query = User.objects.get(pk=id)
+    relation = Followers.objects.create(user=user_query , follower=request.user)
+    relation.save()
+
+    return show_user(request, request.user.id)
+    
+
+
+    # try:
+    #     follows = Followers.objects.get(user=user_prof)
+    # except:
+    #     follows=None
+    #     print(f"El valor de follows es : ",follows)
+
+    # all_posts = Post.objects.get(user=user_prof)
+    # all_p = []
+
+    # try:
+    #     print(len(all_posts))
+    # except (TypeError):
+    #     all_p.append(Post.objects.get(user=user_prof))
+    #     all_posts = all_p
