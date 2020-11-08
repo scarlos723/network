@@ -21,7 +21,7 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-
+    
         # Check if authentication successful
         if user is not None:
             login(request, user)
@@ -85,13 +85,16 @@ def compose_post(request):
 
 def show_user(request, id):
 
-    print(request.user.id)
+    
     user_prof = User.objects.get(pk=id)
 
     follow_count = Followers.objects.filter(user=user_prof).count()
     all_posts = Post.objects.get(user=user_prof)
     followed_count = Followers.objects.filter(follower=user_prof).count()
     all_p = []
+    
+    #verificar si existe relacion 1 existe, 0 no existe
+    relation = Followers.objects.filter(user=user_prof , follower=request.user).count()
 
     try:
         print(len(all_posts))
@@ -99,7 +102,7 @@ def show_user(request, id):
         all_p.append(Post.objects.get(user=user_prof))
         all_posts = all_p
 
-    return render(request, "network/profile.html", {"all_posts":all_posts,"user_prof":user_prof,"follows":follow_count,"followed":followed_count})
+    return render(request, "network/profile.html", {"all_posts":all_posts,"user_prof":user_prof,"follows":follow_count,"followed":followed_count, "relation":relation})
 
 
 def follow_to(request,id):

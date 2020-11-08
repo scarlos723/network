@@ -8,9 +8,12 @@
     <p>{{user_prof. }}</p>
     <p>Followers: {{follows}} </p>
     <p>Followed: {{followed}}</p>
-    {%if user.username != user_prof.username%}
     
-    <a href="/follow/{{user_prof.id}}" id="button_follow" >Seguir</a>
+    {%if user.username != user_prof.username%}
+    {% if relation == 0 %}
+
+    <a href="/follow/{{user_prof.id}}" id="button_follow">Seguir</a>
+    {% endif %}
     {%endif%}
 
 </div>
