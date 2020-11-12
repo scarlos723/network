@@ -12,7 +12,7 @@ textarea{
     height: 180px;
 }
 
-.post-card{
+/* .post-card{
     display: flexbox;
     flex-wrap: wrap;
     background-color: red;
@@ -28,7 +28,7 @@ textarea{
 .post-card-text{
     margin: 10px;
 
-}
+} */
 
 #button_follow{
     padding: .25rem .5rem;
@@ -40,3 +40,5 @@ textarea{
     border-color: #007bff;
     text-decoration: none;
 }
+
+

@@ -10,7 +10,7 @@ class Post(models.Model):
     
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name="post_create") #if user is deleted, auction will be deleted
     
-    date = models.DateField(auto_now_add=True, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     text = models.CharField(max_length=255, null=True)
 

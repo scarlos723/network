@@ -3,6 +3,15 @@
 
 {% block body %}
 
+<!-- <div class="overlay" id="overlay">
+    <div class="popup">
+        <a href="" class="btn-close" id="btn-close">X</a>
+        <p>The mail was archived</p>
+        <button class="btn btn-sm btn-outline-primary" id="btn-undo">Undo</button>
+    </div>
+</div> -->
+
+
 <div class="box-cont">
     <p><strong> {{user_prof.username}} </strong></p>
     <p>{{user_prof. }}</p>
@@ -25,10 +34,10 @@
             <h5 class="card-title"> {{post.user.username}}</h5>
             <p>
                 {% if post.user.username == user.username %}
-                <a href="#">Edit</a>
+                <button data-page="{{post.id}}" class="btn btn-primary btn-sm" id="btn-edit-post" >Edit</button>
                 {% endif %}
             </p>
-            <p class="card-text">{{post.text}}</p>
+            <p class="card-text" id="text-post-{{post.id}}">{{post.text}}</p>
             <p class="card-text"><small class="text-muted">{{post.date}}</small></p>
             <p> <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> <small>{{post.likes}}</small></p>
         </div>

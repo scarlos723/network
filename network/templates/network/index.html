@@ -4,6 +4,15 @@
 {% block body %}
 
 {% if user.is_authenticated %}
+
+<!-- <div class="overlay" id="overlay">
+    <div class="popup">
+        <a href="" class="btn-close" id="btn-close">X</a>
+        <p>The mail was archived</p>
+        <button class="btn btn-sm btn-outline-primary" id="btn-undo">Undo</button>
+    </div>
+</div> -->
+
 <div class="box-cont">
     <form action="newpost" method="POST">
         {% csrf_token %}
@@ -15,18 +24,62 @@
     </form>
 </div>
 {%endif%}
+<div>
+    <!-- Aqui esta el pnumero de paginas {{posts.paginator.num_pages}}
 
+    aqui esta el numero de paginas  {{posts.has_previous}} -->
+    
+    Prueba  {{posts.has_previous}}
+
+</div>
+  
+<div class=" row align-items-center justify-content-center ">
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination">
+            <li class="page-item">
+                {%if posts.has_previous%}
+                <a class="page-link" href="?page={{posts.previous_page_number}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                {%endif%}
+                
+            </li>
+
+            {% for num in posts.paginator.page_range %}
+            <li class="page-item"><a class="page-link" href="?page={{num}}">
+               <!-- {%if num > posts.number|add:'-3' and num < posts.number|add:'3'%}
+
+               {%endif%} -->
+
+                {{num}}
+            
+            </a></li>
+            {% endfor %}
+
+
+            <li class="page-item">
+                {%if posts.has_next%}
+                <a class="page-link" href="?page={{posts.next_page_number}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                {%endif%}
+            </li>
+        </ul>
+    </nav>
+</div>
 <div class="box-cont">
+
 
     {% for post in posts %}
 
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title"> <a href="/profile/{{post.user.id}}" style="text-decoration: none;"> {{post.user.username}} </a> </h5>
+            <h5 class="card-title"> <a href="/profile/{{post.user.id}}" style="text-decoration: none;">
+                    {{post.user.username}} </a> </h5>
             <p>
                 {% if post.user.username == user.username %}
-                <a href="#">Edit</a>
+                <button class="btn btn-primary btn-sm" id="btn-edit-post">Edit</button>
                 {% endif %}
             </p>
             <p class="card-text">{{post.text}}</p>
