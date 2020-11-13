@@ -53,10 +53,8 @@ function update_post(id) {
     fetch('/update',{
         method:'POST',
         body:data,
-        credentials: 'same-origin',
-        headers: {
-            "X-CSRFToken": token
-        }
+        
+        
     })
     .then(response => response.json())
     .then(result => {
