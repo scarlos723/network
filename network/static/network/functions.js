@@ -63,6 +63,12 @@ function update_post(id) {
          //load_mailbox('inbox');
        });
 
+
+    document.getElementById('text-post-' + id).innerHTML = text;
+    document.querySelector('#text-edit-area'+id).style.display="none";
+    document.querySelector('#button-edit-send-'+ id).style.display="none";
+
+
 }
 
 

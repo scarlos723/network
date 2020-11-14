@@ -149,16 +149,17 @@ def following_to(request, id):
 
 
 def update_post(request):
-    print("entro a la funcion update_post")
     
     if request.method == "POST":
         print(f"la request es: ", request.POST['id'] )
         post =  Post.objects.get(pk = request.POST['id'])
         post.text=request.POST['text']
         post.save()
-        print("post actualizado")
+        print("post update")
 
-    
+    return redirect('')
+
+
 
     
 

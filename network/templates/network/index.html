@@ -84,7 +84,13 @@
             </p>
             <p class="card-text">{{post.text}}</p>
             <p class="card-text"><small class="text-muted">{{post.date}}</small></p>
-            <p> <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> <small>{{post.likes}}</small></p>
+            <p> 
+                <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> 
+                <small>{{post.likes}} </small> 
+                {% if post.user.username != user.username %}
+                <button  id="like-btn"  value="{{post.likes}}" > Like </button>
+                {% endif %}
+            </p>
         </div>
 
     </div>
