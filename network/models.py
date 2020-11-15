@@ -16,6 +16,8 @@ class Post(models.Model):
 
     likes = models.IntegerField(default=None, null=True, blank=True)
 
+    verify_like = models.BooleanField(default=True, null=True, blank=True)
+
 
 class Followers(models.Model):
 

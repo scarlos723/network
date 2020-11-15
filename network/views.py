@@ -11,12 +11,36 @@ from .models import User, Post, Followers, Like
 def index(request):
     
     posts = Post.objects.all().order_by('-date')
-    paginator = Paginator(posts,3)
+    paginator = Paginator(posts,10)
     page = request.GET.get('page')
+
+    new_posts=[]
+
+    for one_post in posts:
+        try:
+            like = Like.objects.filter(user=request.user, post=one_post)
+            
+           
+        except:
+            print("error al obtener like")
+
+        if like:
+            print("El like existe")
+            one_post.verify_like = True
+        else:
+            print("el like no existe")
+            one_post.verify_like = False
+
+        new_posts.append(one_post)
+        
+    print(new_posts)
+        
+
+
 
     all_posts = paginator.get_page(page)
     
-    return render(request, "network/index.html", { "posts":all_posts})
+    return render(request, "network/index.html", { "posts":new_posts})
 
 
 def login_view(request):
@@ -160,7 +184,19 @@ def update_post(request):
     return redirect('')
 
 
+def add_like(request):
+    
+    if request.method == "POST":
+        print(f"el like lo dio el usuario ", request.user)
+        post_like= Post.objects.get(pk=request.POST["id"])
+        
+        new_like = Like.objects.create(user=request.user,post = post_like)
+        new_like.save()
+        print("Like creado")
 
+        post_like.likes = Like.objects.filter(post=request.POST["id"]).count()
+        post_like.save()
+        print("Like guardado en post")
     
 
 

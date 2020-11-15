@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    document.querySelectorAll('#like-btn').forEach(button2 => {
+        button2.onclick = function () {
+            console.log("Entro al selector");
+            this.style.display = "none";
+            send_like(this.dataset.page);
+        }
+    });
+
 });
 
 
@@ -38,12 +46,9 @@ function update_post(id) {
 
     console.log('Enviando Post..');
 
-    console.log(token);
     let data = new FormData();
     
     var text = document.querySelector('#text-edit-area'+id).value;
-
-    console.log(text);
 
     data.append('id',id);
     data.append('text',text);
@@ -72,13 +77,40 @@ function update_post(id) {
 }
 
 
+function send_like(id){
+    console.log(id);
 
+    let data = new FormData();
+
+    data.append('id',id);
+  
+    data.append('csrfmiddlewaretoken',token);
+
+    fetch('/like',{
+        method:'POST',
+        body:data,
+        
+    })
+    .then(response => response.json())
+    .then(result => {
+         // Print result
+         console.log(result);
+         //load_mailbox('inbox');
+       });
+
+    var count = document.getElementById('num-likes-id-'+id);
+    var sum = parseInt(count.innerHTML)+1;
+
+    count.innerHTML = sum;
+
+    console.log("El contador es " + sum);
+}
 
 //function send_post(){
     // console.log('Enviando Post..');
 
     // console.log(token);
-    // let data = new FormData();
+    // let data = nea "[da "[w FormData();
     // var username = document.getElementById('user-name').value;
     // var useremail = document.getElementById('user-email').value;
     // var pass= document.getElementById('user-password').value;
