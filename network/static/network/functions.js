@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    //document.querySelector('#btn-edit-post').addEventListener('click', () => edit_post());
 
     document.querySelectorAll('#btn-edit-post').forEach(button => {
         button.onclick = function () {
@@ -11,10 +10,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelectorAll('#like-btn').forEach(button2 => {
         button2.onclick = function () {
-            console.log("Entro al selector");
+            
             this.style.display = "none";
             send_like(this.dataset.page);
         }
+    });
+
+    // document.querySelectorAll('#unlike-button').forEach(button1 => {
+    //     button1.onclick = function () {
+    //         console.log("Click en boton unlike");
+    //         this.style.display = "none";
+    //         remove_like(this.dataset.page);
+    //     }
+    // });
+    document.querySelectorAll('#unlike-btn').forEach(button1 => {
+            button1.onclick = function () {
+                console.log("Click en boton unlike");
+                this.style.display = "none";
+                remove_like(this.dataset.page);
+            }
     });
 
 });
@@ -78,6 +92,9 @@ function update_post(id) {
 
 
 function send_like(id){
+
+    
+
     console.log(id);
 
     let data = new FormData();
@@ -103,6 +120,57 @@ function send_like(id){
 
     count.innerHTML = sum;
 
+    var unlike_btn=document.createElement('button');
+    unlike_btn.innerHTML = 'Unlike';
+    unlike_btn.setAttribute('data-page',id);
+    unlike_btn.setAttribute('id','unlike-button2');
+    unlike_btn.setAttribute('onClick','remove_like('+ id +');');
+    //unlike_btn.setAttribute('class','class="btn btn-danger');
+    var like_section = document.getElementById('like-section-'+id);
+    like_section.appendChild(unlike_btn);
+    document.querySelector('#like-button2').style.display='none';
+
+    console.log("El contador es " + sum);
+}
+
+function remove_like(id){
+
+
+    console.log(id);
+
+    let data = new FormData();
+
+    data.append('id',id);
+  
+    data.append('csrfmiddlewaretoken',token);
+
+    fetch('/unlike',{
+        method:'POST',
+        body:data,
+        
+    })
+    .then(response => response.json())
+    .then(result => {
+         // Print result
+         console.log(result);
+         //load_mailbox('inbox');
+       });
+
+    var count = document.getElementById('num-likes-id-'+id);
+    var sum = parseInt(count.innerHTML)-1;
+
+    count.innerHTML = sum;
+
+    var like_btn=document.createElement('button');
+    like_btn.innerHTML = 'Like';
+    like_btn.setAttribute('data-page',id);
+    like_btn.setAttribute('id','like-button2');
+    like_btn.setAttribute('onClick','send_like('+ id +');');
+    //like_btn.setAttribute('class','class="btn btn-primary');
+    var like_section = document.getElementById('like-section-'+id);
+    like_section.appendChild(like_btn);
+    document.querySelector('#unlike-button2').style.display='none';
+    
     console.log("El contador es " + sum);
 }
 

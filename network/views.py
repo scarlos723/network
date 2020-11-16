@@ -11,36 +11,27 @@ from .models import User, Post, Followers, Like
 def index(request):
     
     posts = Post.objects.all().order_by('-date')
-    paginator = Paginator(posts,10)
-    page = request.GET.get('page')
-
     new_posts=[]
-
     for one_post in posts:
         try:
-            like = Like.objects.filter(user=request.user, post=one_post)
-            
-           
+            like = Like.objects.filter(user=request.user, post=one_post) 
         except:
-            print("error al obtener like")
+            print("Error al obtener like")
 
         if like:
-            print("El like existe")
             one_post.verify_like = True
         else:
-            print("el like no existe")
             one_post.verify_like = False
 
         new_posts.append(one_post)
         
-    print(new_posts)
+
+    paginator = Paginator(new_posts,10)
+    page = request.GET.get('page')
         
-
-
-
     all_posts = paginator.get_page(page)
     
-    return render(request, "network/index.html", { "posts":new_posts})
+    return render(request, "network/index.html", { "posts":all_posts})
 
 
 def login_view(request):
@@ -140,7 +131,7 @@ def follow_to(request,id):
     relation = Followers.objects.create(user=user_query , follower=request.user)
     relation.save()
 
-    return show_user(request, request.user.id)
+    return show_user(request, id)
     
 
 def following_to(request, id):
@@ -164,12 +155,31 @@ def following_to(request, id):
                 posts = None   
                 pass 
     except:
+        print("No sigue a ninguna cuenta aun") 
 
-        print("No sigue a ninguna cuenta aun")  
+    #Verificar likes y paginacion
+    like_posts=[]
+    if posts != None:
+        for one_post in posts:
+            try:
+                like = Like.objects.filter(user=request.user, post=one_post) 
+            except:
+                like=None
+                print("Error al obtener like")
 
-    
+            if like:
+                one_post.verify_like = True
+            else:
+                one_post.verify_like = False
 
-    return render(request, "network/following.html", {"all_posts":posts,"user_prof":user_profile})
+            like_posts.append(one_post)
+
+        paginator = Paginator(like_posts,10)
+        page = request.GET.get('page')
+        
+        all_posts = paginator.get_page(page)
+
+    return render(request, "network/following.html", {"all_posts":all_posts,"user_prof":user_profile})
 
 
 def update_post(request):
@@ -197,6 +207,26 @@ def add_like(request):
         post_like.likes = Like.objects.filter(post=request.POST["id"]).count()
         post_like.save()
         print("Like guardado en post")
+
+def remove_like(request):
+
+    if request.method == "POST":
+        post_like= Post.objects.get(pk=request.POST["id"])
+
+        like = Like.objects.filter(user=request.user, post=post_like)
+        like.delete()
+        print("Like eliminado")
+
+        post_like.likes = Like.objects.filter(post=request.POST["id"]).count()
+        post_like.save()
+        print("Like guardado en post")
+
+def unfollow_to(request, id):
+    user_query = User.objects.get(pk=id)
+    relation = Followers.objects.filter(user=user_query , follower=request.user)
+    relation.delete()
+
+    return show_user(request, id)
     
 
 

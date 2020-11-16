@@ -8,7 +8,39 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="{% static 'network/styles.css' %}" rel="stylesheet">
-    
+    <style>
+        #button_follow{
+            background-color:#007bff;
+            color: white;
+            border-radius: 7px;
+            border: 1px solid #007bff ;
+            padding: 3px;
+        }
+        #button_unfollow{
+            background-color:#ca3e2b;
+            color: white;
+            border-radius: 7px;
+            border: 1px solid #ca3e2b ;
+            padding: 3px;
+        }
+
+        #like-btn, #like-button2{
+            background-color:#007bff;
+            color: white;
+            border-radius: 7px;
+            border: 1px solid #007bff ;
+            font-size: 12px;
+        }
+        #unlike-btn, #unlike-button2{
+            background-color:#ca3e2b;
+            color: white;
+            border-radius: 7px;
+            border: 1px solid #ca3e2b ;
+            font-size: 12px;
+        }
+        
+
+    </style>
     <script>
         var token = '{{ csrf_token }}';
     </script>

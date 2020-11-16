@@ -80,16 +80,16 @@
                 <button data-page="{{post.id}}" class="btn btn-primary btn-sm" id="btn-edit-post">Edit</button>
                 {% endif %}
             </p>
-            <p class="card-text">{{post.text}}</p>
+            <p class="card-text" id="text-post-{{post.id}}">{{post.text}}</p>
             <p class="card-text"><small class="text-muted">{{post.date}}</small></p>
-            <p> 
+            <p id="like-section-{{post.id}}"> 
                 <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> 
                 <small id="num-likes-id-{{post.id}}"> {{post.likes}}</small> 
                 {% if post.user.username != user.username and user.is_authenticated %}
                     {%if post.verify_like == False %}
-                    <button data-page="{{post.id}}" id="like-btn" > Like </button>
+                    <button data-page="{{post.id}}"  id="like-btn" > Like </button>
                     {%else%}
-                    <button data-page="{{post.id}}" id="unlike-btn" > Unlike </button>
+                    <button data-page="{{post.id}}"  id="unlike-btn" > Unlike </button>
                     {% endif %}
                 {% endif %}
             </p>
@@ -98,31 +98,8 @@
     </div>
     <hr>
 
-    <!-- <div class="card">
-        <div class="card-header">
-            <h4>
-                <strong>
-                    {{post.user.username}}
-                </strong>
-            </h4>
-        </div>
-        <div class="card-body">
-            <blockquote class="blockquote mb-0">
-                {% if post.user.username == user.username %}
-                <a href="#">Edit</a>
-                {% endif %}
-                <p>{{post.text}}</p>
-                <footer class="text-muted">{{post.date}} </footer>
-                <p> <img src="{% static 'images/like.svg' %}" height="20px" width="20px"> <small>{{post.likes}}</small>
-                </p>
-            </blockquote>
-        </div>
-    </div>
-    <hr> -->
     {% endfor %}
 </div>
-
-
 
 
 

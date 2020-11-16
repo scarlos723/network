@@ -21,7 +21,9 @@
     {%if user.username != user_prof.username%}
     {% if relation == 0 %}
 
-    <a href="/follow/{{user_prof.id}}" id="button_follow">Seguir</a>
+    <a href="/follow/{{user_prof.id}}" id="button_follow">Follow</a>
+    {%else%}
+    <a href="/unfollow/{{user_prof.id}}" id="button_unfollow">Unfollow</a>
     {% endif %}
     {%endif%}
 
