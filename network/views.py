@@ -16,6 +16,7 @@ def index(request):
         try:
             like = Like.objects.filter(user=request.user, post=one_post) 
         except:
+            like=None
             print("Error al obtener like")
 
         if like:
@@ -122,8 +123,29 @@ def show_user(request, id):
         all_p.append(Post.objects.get(user=user_prof))
         all_posts = all_p
 
+
+    like_posts_pag=[]
     
-    return render(request, "network/profile.html", {"all_posts":all_posts,"user_prof":user_prof,"follows":follow_count,"followed":followed_count, "relation":relation})
+    for one_post in all_posts:
+        try:
+            like = Like.objects.filter(user=request.user, post=one_post) 
+        except:
+            like=None
+            print("Error al obtener like")
+
+        if like:
+            one_post.verify_like = True
+        else:
+            one_post.verify_like = False
+
+        like_posts_pag.append(one_post)
+
+    paginator = Paginator(like_posts_pag,10)
+    page = request.GET.get('page')
+    
+    all_posts_pag = paginator.get_page(page)
+    
+    return render(request, "network/profile.html", {"all_posts":all_posts_pag,"user_prof":user_prof,"follows":follow_count,"followed":followed_count, "relation":relation})
 
 
 def follow_to(request,id):
@@ -138,6 +160,7 @@ def following_to(request, id):
     user_profile = User.objects.get(pk=id)
     
     flag=True
+    posts=None
     try:
         followed_counts = Followers.objects.filter(follower=user_profile)
         for user_follow in followed_counts:
@@ -155,6 +178,7 @@ def following_to(request, id):
                 posts = None   
                 pass 
     except:
+        
         print("No sigue a ninguna cuenta aun") 
 
     #Verificar likes y paginacion
@@ -178,6 +202,8 @@ def following_to(request, id):
         page = request.GET.get('page')
         
         all_posts = paginator.get_page(page)
+    else:
+        all_posts=[]
 
     return render(request, "network/following.html", {"all_posts":all_posts,"user_prof":user_profile})
 
